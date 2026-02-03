@@ -1,0 +1,23 @@
+SOLUTION 3 — Exception métier PROPRE (solution professionnelle)
+
+Utiliser une exception métier déclarée avec @WebFault
+
+Exception métier
+import jakarta.xml.ws.WebFault;
+
+@WebFault(name = "CompteIntrouvableFault")
+public class CompteIntrouvableException extends Exception {
+    public CompteIntrouvableException(String message) {
+        super(message);
+    }
+}
+
+Service
+@WebMethod
+public Compte getCompte(int code) throws CompteIntrouvableException {
+    for (Compte c : comptes) {
+        if (c.getCode() == code)
+            return c;
+    }
+    throw new CompteIntrouvableException("Compte introuvable : " + code);
+}
